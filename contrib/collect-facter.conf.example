@@ -1,0 +1,17 @@
+<LoadPlugin python>
+    Globals true
+</LoadPlugin>
+
+<Plugin "python">
+  ModulePath  "/usr/lib/python2.4/site-packages"
+  LogTraces   true
+  Interactive false
+  Import      "collectd_facter"
+
+  <Module "collectd_facter">
+    Fact "processorcount"
+    Fact "uptime_seconds" "uptime"
+    FactFile "/etc/collectd-facter.list"
+  </Module>
+</Plugin>
+
