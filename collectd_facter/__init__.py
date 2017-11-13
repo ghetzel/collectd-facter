@@ -18,8 +18,8 @@ import subprocess
 #   processes the collectd.conf configuration stanza for this plugin
 #
 def config(c):
-  global facts, config
-
+  global facterbin, facts, config
+  facterbin = 'facter'
   facts = {}
 
   for ci in c.children:
@@ -52,6 +52,9 @@ def config(c):
 
       facts[fact] = value
 
+    elif ci.key == 'Facter':
+       facterbin = ci.values[0]
+
 
 
 # -----------------------------------------------------------------------------
@@ -64,7 +67,7 @@ def read(data=None):
   env = os.environ.copy()
   env['FACTERLIB'] = '/etc/facter'
 
-  output = subprocess.Popen((['facter', '--json']+facts.keys()), 
+  output = subprocess.Popen(([facterbin, '--json']+facts.keys()), 
 stdout=subprocess.PIPE, env=env)
   output.wait()
   output = output.stdout.read()
